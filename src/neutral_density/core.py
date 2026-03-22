@@ -896,8 +896,6 @@ stga_data = np.zeros((4050, 4, 33), dtype=np.float32)
 
 
 def init_fdt(llp_path="llp.fdt", stga_path="stga.fdt"):
-    global along_d, alat_d, p0_s_global, n_global, iocean_global, stga_data
-
     f = FortranFile(llp_path, "r")
     record = f.read_reals(dtype=np.float32)
     f.close()
