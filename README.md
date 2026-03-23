@@ -1,6 +1,11 @@
 # neutral_density
 
-*a direct translation of Jackett’s neutral density Fortran suite*
+*a direct translation of Jackett’s neutral density Fortran suite into Python*
+
+This package solves the issue of calculating the neutral density oceanographic variable in Python. Other options include running the routines in the original [Fortran or MATLAB](https://www.teos-10.org/preteos10_software/neutral_density.html), or in Python via f2py. This translation owes much to the [implementation](https://github.com/guidov/pygamman_f2py) of the latter by Guido Vettoretti, and adopts its general organization. The goal of this package is to expand the accessibility and repeatability of these routines and ease their integration into other scientific Python applications and packages. 
+
+This is a work in progress. Please reach out with any comments or suggestions!
+
 
 ## Setup
 
@@ -10,8 +15,28 @@ Clone to your machine.  Ensure pip and python are installed in a virtual environ
 python -m pip install -e .
 ```
 
-Not yet available via conda-forge or pypy, but this is a target for future development if interest warrants.
+This work is not yet available via conda-forge or pypy, but this is a target for future development if interest warrants.
 
+## Use
+
+The first thing to do before using `neutral_density` is import the required Fortran data tables:
+
+```python
+import neutral_density as nd 
+init_fdt(llp_path="path/to/llp.fdt", stga_path="path/to/stga.fdt")
+```
+
+Within the package, they may be found at `neutral_density/src/neutral_density/`. 
+
+## Citation
+
+Users wishing to cite this Python translation may temporarily (until a proper repository citation is created) use:
+
+> Sandborn, Daniel E. 2026. neutral_density: a direct translation of Jackett’s neutral density Fortran suite into Python. 
+
+Users wishing to cite the original neutral density work should cite:
+
+> Jackett, David R., Trevor J. McDougall, 1997: A Neutral Density Variable for the World's Oceans. J. Phys. Oceanogr., 27, 237–263. doi: 10.1175/1520-0485(1997)0272.0.CO;2
 
 ## Disclaimer
 

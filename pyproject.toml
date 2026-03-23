@@ -10,3 +10,6 @@ dependencies = [
     "scipy",
     "numba"
 ]
+
+[tool.setuptools.package-data]
+neutral_density = ["*.fdt"]
