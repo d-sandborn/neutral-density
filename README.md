@@ -1,5 +1,7 @@
 # neutral_density
 
+[![Python package](https://github.com/d-sandborn/neutral_density/actions/workflows/python-package.yml/badge.svg)](https://github.com/d-sandborn/neutral_density/actions/workflows/python-package.yml) 
+
 *a direct translation of Jackett’s neutral density Fortran suite into Python*
 
 This package solves the issue of calculating the neutral density oceanographic variable in Python. Other options include running the routines in the original [Fortran or MATLAB](https://www.teos-10.org/preteos10_software/neutral_density.html), or in Python via f2py. This translation owes much to the [implementation](https://github.com/guidov/pygamman_f2py) of the latter strategy by Guido Vettoretti, and adopts its general organization. The goal of this package is to expand the accessibility and repeatability of these routines and ease their integration into other scientific Python applications and packages. 
