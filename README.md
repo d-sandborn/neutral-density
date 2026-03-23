@@ -4,10 +4,9 @@
 
 *a direct translation of Jackett’s neutral density Fortran suite into Python*
 
-This package solves the issue of calculating the neutral density oceanographic variable in Python. Other options include running the routines in the original [Fortran or MATLAB](https://www.teos-10.org/preteos10_software/neutral_density.html), or in Python via f2py. This translation owes much to the [implementation](https://github.com/guidov/pygamman_f2py) of the latter strategy by Guido Vettoretti, and adopts its general organization. The goal of this package is to expand the accessibility and repeatability of these routines and ease their integration into other scientific Python applications and packages. 
+This package solves the issue of calculating the neutral density oceanographic variable in Python. Other options include running the routines in the original [Fortran or MATLAB](https://www.teos-10.org/preteos10_software/neutral_density.html) published by D. Jackett & T. McDougall, or in Python via f2py like the [implementation](https://github.com/guidov/pygamman_f2py) by G. Vettoretti. The goal of this package is to expand the accessibility and repeatability of these routines and ease their integration into other scientific Python applications and packages. 
 
-This is a work in progress. Please reach out with any comments or suggestions!
-
+Please reach out with any comments or suggestions!
 
 ## Setup
 
@@ -107,7 +106,7 @@ Given a cast with S, T, P, and neutral densities, the S, T, and P at user-specif
 
 For raw numerical execution, you won't easily beat Fortran. This package provides high-level Python accessibility while approaching Fortran speeds by using Numba just-in-time (JIT) compilation.
 
-The first time `gamma_n` is called, Numba compiles Python code into machine instructions optimized for your specific CPU. This creates a one-time overhead of several seconds. Subsequent calls—even with different array lengths—execute at near-Fortran speeds. Re-compilation only occurs if the input data types change, which is prevented in most cases by wrappers that cast all inputs into float types. JIT compilation provides a performance boost for iterative (i.e. in loops) processing of large datasets without the complexity of manual C or Cython bindings -- though those could be a useful future project. 
+The first time `gamma_n` or `neutral_surfaces` is called, Numba compiles Python code into machine instructions optimized for your CPU. This creates a one-time overhead of several seconds. Further calls execute at near-Fortran speeds. Recompilation only occurs if the input data types change, which is prevented in most cases by wrappers that cast all input into float types. JIT compilation provides a performance boost for iterative (i.e. in loops) processing of large datasets without the complexity of manual C or Cython bindings -- though those could be a useful future project. 
 
 ## Citation
 
