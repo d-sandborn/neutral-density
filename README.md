@@ -10,13 +10,23 @@ Please reach out with any comments or suggestions!
 
 ## Setup
 
-Clone to your machine.  Ensure pip and python are installed in a virtual environment (we suggest [this method](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)). Install by navigating to the unzipped directory and running the following command in a terminal emulator
+### pip
+
+```bash
+python pip install neutral-density
+```
+
+### conda
+
+This work is not yet available via conda-forge , but that is a target for future development if interest warrants it.
+
+### local install
+
+Clone to your machine.  Ensure pip and python, and all requirements are installed in a virtual environment (we suggest [this method](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)). Install by navigating to the unzipped directory and running the following command in a terminal emulator
 
 ```bash
 python -m pip install -e .
 ```
-
-This work is not yet available via conda-forge or pypy, but that is a target for future development if interest warrants it.
 
 ## Calculate neutral densities for casts
 
