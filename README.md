@@ -13,7 +13,7 @@ Please reach out with any comments or suggestions!
 ### pip
 
 ```bash
-python pip install neutral-density
+pip install neutral-density
 ```
 
 ### conda
