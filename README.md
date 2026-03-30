@@ -18,11 +18,11 @@ pip install neutral-density
 
 ### conda
 
-This work is not yet available via conda-forge , but that is a target for future development if interest warrants it.
+This work is not yet available via conda-forge , but that is a target for future development if interest warrants it. To install in a conda or mamba environment, continue with the local install, below, making sure to install all requirements before pip installation to avoid pip/conda conflicts. 
 
 ### local install
 
-Clone to your machine.  Ensure pip and python, and all requirements are installed in a virtual environment (we suggest [this method](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)). Install by navigating to the unzipped directory and running the following command in a terminal emulator
+Clone to your machine.  Ensure pip, python, and all requirements are installed in a virtual environment (we suggest [this method](https://mamba.readthedocs.io/en/latest/installation/mamba-installation.html)). Install by navigating to the unzipped directory and running the following command in a terminal emulator
 
 ```bash
 python -m pip install -e .
