@@ -2,7 +2,7 @@
 
 [![Python package](https://github.com/d-sandborn/neutral-density/actions/workflows/python-package.yml/badge.svg)](https://github.com/d-sandborn/neutral-density/actions/workflows/python-package.yml) 
 
-*a direct translation of Jackett’s neutral density Fortran suite into Python*
+*a direct translation of Jackett's neutral density Fortran suite into Python*
 
 This package solves the issue of calculating the neutral density oceanographic variable in Python. Other options include running the routines in the original [Fortran or MATLAB](https://www.teos-10.org/preteos10_software/neutral_density.html) published by D. Jackett & T. McDougall, or in Python via f2py like the [implementation](https://github.com/guidov/pygamman_f2py) by G. Vettoretti. The goal of this package is to expand the accessibility and repeatability of these routines and ease their integration into other scientific Python applications and packages. 
 
@@ -112,6 +112,89 @@ Given a cast with S, T, P, and neutral densities, the S, T, and P at user-specif
 > [!TIP]
 > Output values of `-99.0` indicate the surface outcropped or undercropped the cast. Like `gamma_n`, this function always returns 1D NumPy arrays for consistency.
 
+## Calculate neutral densities and surfaces along a transect
+
+The `transect` submodule extends `gamma_n` and `neutral_surfaces` to operate
+on an entire GO-SHIP section loaded from a WHP-Exchange `.hy1` bottle file.
+All three functions return plain pandas DataFrames.
+
+```python
+import numpy as np
+from neutral_density import transect as tx
+
+# Parse the hydrofile
+df = tx.read_goship_hy1("33RO20131223_hy1.csv")
+
+# Compute γn for every bottle — returns a long-format DataFrame
+gamma_df = tx.gamma_transect(df)
+
+# Find neutral surfaces — pass gamma_df to skip recomputing γn
+glevels = np.arange(26.0, 28.5, 0.1)
+surf_df = tx.neutral_surface_transect(gamma_df, glevels)
+```
+
+Both transect functions also accept a file path directly, so the two-step
+parse-then-compute pattern is optional:
+
+```python
+gamma_df = tx.gamma_transect("33RO20131223_hy1.csv")
+surf_df  = tx.neutral_surface_transect("33RO20131223_hy1.csv", glevels)
+```
+
+### `read_goship_hy1(filepath, fill_value=-999, max_flag=2, sort_pressure=True)`
+
+Parses a WHP-Exchange `.hy1` file into a clean DataFrame. Replaces −999 fill
+values with `NaN`, drops bottles where `CTDSAL_FLAG_W > max_flag`, sorts each
+cast by increasing pressure, and appends a `longitude_360` column (−180→+180
+converted to 0→360) so `gamma_n` receives the longitude convention it expects.
+
+### `gamma_transect(source, fill_value=-999, max_flag=2, its90_correction=True, verbose=True)`
+
+Iterates cast-by-cast over the section, calling `gamma_n` for each one.
+Returns a **long-format DataFrame** with one row per bottle:
+
+| Column | Units | Description |
+| :--- | :--- | :--- |
+| `station`, `cast` | — | Station and cast numbers from the hydrofile. |
+| `latitude`, `longitude` | °N, °E | Cast position (longitude in −180→+180). |
+| `pressure` | dbar | Bottle pressure. |
+| `salinity` | psu | CTD salinity. |
+| `temperature` | °C (IPTS-68) | In-situ temperature. |
+| `gamma` | kg m⁻³ | Neutral density. −99.0 = algorithm failure; −99.1 = outside valid EOS range. |
+| `gamma_lo`, `gamma_hi` | kg m⁻³ | Lower and upper γn uncertainty estimates. |
+
+> [!NOTE]
+> Modern GO-SHIP CTD temperatures are reported on the ITS-90 scale, but EOS-80
+> (on which γn is defined) uses IPTS-68. The correction T₆₈ = 1.00024 × T₉₀
+> is applied by default. Set `its90_correction=False` only if your temperatures
+> are already on IPTS-68.
+
+### `neutral_surface_transect(source, glevels, fill_value=-999, max_flag=2, its90_correction=True, verbose=True)`
+
+Locates each target neutral density surface in every cast along the section.
+`source` can be a file path, a DataFrame from `read_goship_hy1`, or the
+output of `gamma_transect` — passing the latter avoids recomputing γn.
+Returns a **long-format DataFrame** with one row per (surface, cast) pair:
+
+| Column | Units | Description |
+| :--- | :--- | :--- |
+| `gamma_level` | kg m⁻³ | The target neutral density surface. |
+| `station`, `cast` | — | Station and cast numbers. |
+| `latitude`, `longitude` | °N, °E | Cast position. |
+| `pressure` | dbar | Pressure where the surface intersects the cast. |
+| `salinity` | psu | Salinity on the surface. |
+| `temperature` | °C (IPTS-68) | In-situ temperature on the surface. |
+| `d_pressure`, `d_salinity`, `d_temperature` | dbar, psu, °C | Uncertainty estimates; non-zero indicates a multiply-defined surface. |
+
+Rows where a surface outcrops or undercrops a cast are present but have `NaN`
+in the pressure, salinity, and temperature columns, so every cast appears at
+every surface level. This makes pivoting and plotting straightforward:
+
+```python
+# Pressure section on a latitude × γn grid
+pivot = surf_df.pivot(index="gamma_level", columns="latitude", values="pressure")
+```
+
 ## Speed
 
 For raw numerical execution, you won't easily beat Fortran. This package provides high-level Python accessibility while approaching Fortran speeds by using Numba just-in-time (JIT) compilation.
@@ -122,7 +205,7 @@ The first time `gamma_n` or `neutral_surfaces` is called, Numba compiles Python 
 
 Users wishing to cite this Python translation may temporarily (until a proper repository citation is created) use:
 
-> Sandborn, Daniel E. 2026. neutral-density: a direct translation of Jackett’s neutral density Fortran suite into Python. 
+> Sandborn, Daniel E. 2026. neutral-density: a direct translation of Jackett's neutral density Fortran suite into Python. 
 
 Users wishing to cite the original neutral density work should cite:
 
@@ -130,4 +213,4 @@ Users wishing to cite the original neutral density work should cite:
 
 ## Disclaimer
 
-The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including without limitation, any warranty of fitness for a particular purpose.In no event shall the authors be liable to you or anyone else for any direct, special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, including without limitation, loss of profit, loss of use, savings or revenue, or the claims of third parties, whether or not the authors have been advised of the possibility of such loss, however caused and on any theory of liability, arising out of or in connection with the possession, use or performance of this software.
+The material embodied in this software is provided to you "as-is" and without warranty of any kind, express, implied or otherwise, including without limitation, any warranty of fitness for a particular purpose. In no event shall the authors be liable to you or anyone else for any direct, special, incidental, indirect or consequential damages of any kind, or any damages whatsoever, including without limitation, loss of profit, loss of use, savings or revenue, or the claims of third parties, whether or not the authors have been advised of the possibility of such loss, however caused and on any theory of liability, arising out of or in connection with the possession, use or performance of this software.
