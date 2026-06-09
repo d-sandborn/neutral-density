@@ -1,6 +1,7 @@
 # neutral-density
 
 [![Python package](https://github.com/d-sandborn/neutral-density/actions/workflows/python-package.yml/badge.svg)](https://github.com/d-sandborn/neutral-density/actions/workflows/python-package.yml) 
+[![DOI](https://zenodo.org/badge/DOI/TBD.svg)](https://doi.org/TBD)
 
 *a direct translation of Jackett's neutral density Fortran suite into Python*
 
@@ -27,6 +28,23 @@ Clone to your machine.  Ensure pip, python, and all requirements are installed i
 ```bash
 python -m pip install -e .
 ```
+
+## Summary of Functions
+
+Main Module:
+
+>`neutral_density.gamma_n()` calculates neutral densities for casts.
+>
+>`neutral_density.neutral_surfaces()` calculates neutral surfaces for casts.
+
+Transect Module:
+
+>`neutral_density.transect.read_goship_hy1()` imports a standard transect hydrofile.
+>
+>`neutral_density.transect.gamma_transect()` calculates neutral densities along a transect.
+>
+>`neutral_density.transect.neutral_surface_transect()` calculates neutral surfaces along a transect.
+
 
 ## Calculate neutral densities for casts
 
@@ -203,9 +221,9 @@ The first time `gamma_n` or `neutral_surfaces` is called, Numba compiles Python 
 
 ## Citation
 
-Users wishing to cite this Python translation may temporarily (until a proper repository citation is created) use:
+Users wishing to cite this Python translation use:
 
-> Sandborn, Daniel E. 2026. neutral-density: a direct translation of Jackett's neutral density Fortran suite into Python. 
+> Sandborn, Daniel E., Kelly, Colette L. 2026. neutral-density v2026.2: a direct translation of Jackett's neutral density Fortran suite into Python. doi: TBD
 
 Users wishing to cite the original neutral density work should cite:
 
