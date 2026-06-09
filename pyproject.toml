@@ -10,6 +10,19 @@ dependencies = [
     "scipy",
     "numba"
 ]
+requires-python = ">=3.10"
+authors: [
+    {name = "Daniel E. Sandborn", email = "sandborn@uw.edu"},
+    {name = "Colette L. Kelly", email = "colette.kelly@whoi.edu"},
+]
+description = "A direct translation of Jackett’s neutral density Fortran suite into Python."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE.*"]
+keywords = ["oceanography", "python"]
+classifiers = [
+    "Programming Language :: Python"
+]
 
 [tool.setuptools.package-data]
 neutral_density = ["*.fdt"]
