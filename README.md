@@ -1,7 +1,7 @@
 # neutral-density
 
 [![Python package](https://github.com/d-sandborn/neutral-density/actions/workflows/python-package.yml/badge.svg)](https://github.com/d-sandborn/neutral-density/actions/workflows/python-package.yml) 
-[![DOI](https://zenodo.org/badge/DOI/TBD.svg)](https://doi.org/TBD)
+[![DOI](https://zenodo.org/badge/1188698607.svg)](https://doi.org/10.5281/zenodo.20616409)
 
 *a direct translation of Jackett's neutral density Fortran suite into Python*
 
@@ -223,7 +223,7 @@ The first time `gamma_n` or `neutral_surfaces` is called, Numba compiles Python 
 
 Users wishing to cite this Python translation use:
 
-> Sandborn, Daniel E., Kelly, Colette L. 2026. neutral-density v2026.2: a direct translation of Jackett's neutral density Fortran suite into Python. doi: TBD
+> Sandborn, Daniel E., Kelly, Colette L. 2026. neutral-density v2026.2: a direct translation of Jackett's neutral density Fortran suite into Python. doi: [10.5281/zenodo.20616409](https://doi.org/10.5281/zenodo.20616409)
 
 Users wishing to cite the original neutral density work should cite:
 
